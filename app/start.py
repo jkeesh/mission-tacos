@@ -11,6 +11,9 @@ import options
 class Application(tornado.web.Application):
     def __init__(self):
         url_handlers = [
+            (r'/static/(.*)', tornado.web.StaticFileHandler, {
+                'path': 'static/'
+            }),
             (r'/.*', main_handlers.IndexHandler),
         ]
         tornado.web.Application.__init__(self,
