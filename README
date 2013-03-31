@@ -7,8 +7,8 @@ To get started:
     source mission-tacos-env/bin/activate
 
     cd mission-tacos
-   	pip install -r requirements.txt
+    pip install -r requirements.txt
 
-   	python app/start.py
+    python app/start.py
 
 Navigate in yo' web browsing device to http://localhost:8000/
