@@ -49,9 +49,12 @@ else:
             self.write("Hello, world")
 
     if __name__ == "__main__":
+        print "NAME IS MAIN???"
         application = tornado.wsgi.WSGIApplication([
             (r"/", MainHandler),
         ])
         server = wsgiref.simple_server.make_server('', 8888, application)
         print server
         server.serve_forever()
+
+    print "WE GOT HERE"
