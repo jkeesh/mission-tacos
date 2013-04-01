@@ -21,9 +21,11 @@ $(function(){
   }
 
   function closeAll(){
-    for(var i = 0; i < tacos.length; i++){
-      var cur = tacos[i];
-      cur.infowindow.close();
+    for(var i = 0; i < TACO_PLACES.length; i++){
+      var cur = TACO_PLACES[i];
+      if(cur.infowindow){
+        cur.infowindow.close();
+      }
     }
   }
 
@@ -37,70 +39,24 @@ $(function(){
     return "None";
   }
 
+  function makeSliders(info){
+//      console.log(info);
 
-  // Add the taco info to the list
-  function addToList(tacoInfo){
-    var html = "<div class='info-item' data-id='"+tacoInfo.id+"'><div class='name'>";
+      var initialRating = null;
+      if(info.rating != "None"){
+        initialRating = info.rating;
+      }else{
+        initialRating = 50;
+      }
 
-    html += tacoInfo.info.name;
-    html += "</div><div class='addr'>"
-    html += tacoInfo.info.addr;
-    html += "</div>Rating: " + "<span class='rr'>"+getRating(tacoInfo.info.hash)+"</span>";
-    html += "</div>";
-    $("#taco-list-info").append(html);
+      console.log(initialRating);
 
-    $(".info-item[data-id='"+tacoInfo.id+"']").click(function(){
-        closeAll();
-        tacoInfo.infowindow.open(map, tacoInfo.marker);
-    })
+      if($(".slider").slider('instance')){
+        $( ".slider" ).slider( "destroy" );
+      }
 
-  }
-
-  // Set the box to open when you click this marker
-  function setClickBox(marker, tacoPlace, latLong, id){
-
-
-    var html = "<div class='info-item' data-id='"+tacoPlace.id+"'><div class='name'>";
-
-    html += tacoPlace.name;
-    html += "</div><div class='addr'>";
-    html += tacoPlace.addr;
-    html += "</div><div class='rating'>";
-    html += "Rating: " + "<span class='rr'>"+getRating(tacoPlace.hash)+"</span> <div class='slider'></div>";
-    html += "</div></div>";
-
-    var infowindow = new google.maps.InfoWindow({ 
-      content: html,
-      size: new google.maps.Size(50,50)
-    });
-
-
-
-
-    var taco = {
-      info: tacoPlace,
-      latLng: latLong,
-      marker: marker,
-      infowindow: infowindow,
-      open: false,
-      id: id
-    };
-
-
-
-
-
-
-    addToList(taco);
-
-    tacos.push(taco);
-
-    google.maps.event.addListener(marker, 'click', function(event) {
-      closeAll();
-      if(!taco.open){
-        infowindow.open(map, marker);
-
-        $( ".slider" ).slider({
+      $( ".slider" ).slider({
+            value: initialRating,
             slide: function(event, ui){
               var value = ui.value / 10;
               $this = $(this);
@@ -125,11 +81,79 @@ $(function(){
               });
             }
         });
-      }else{
-        infowindow.close();        
-      }
-      taco.open = !taco.open;        
+  }
+
+
+  // Add the taco info to the list
+  function addToList(info){
+    var html = "<div class='info-item' data-id='"+info.idx+"'><div class='name'>";
+
+    html += info.name;
+    html += "</div><div class='addr'>"
+    html += info.addr;
+    html += "</div>Rating: " + "<span class='rr'>"+info.rating+"</span>";
+    html += "</div>";
+    $("#taco-list-info").append(html);
+
+    $(".info-item[data-id='"+info.idx+"']").click(function(){
+        closeAll();
+        info.infowindow.open(map, info.marker);
+        //makeSliders(tacoInfo);
+    })
+
+  }
+
+  // Set the box to open when you click this marker
+  function getClickBox(info){
+    var rating = info.rating;
+
+    var html = "<div class='info-item' data-id='"+info.idx+"'><div class='name'>";
+
+    html += info.name;
+    html += "</div><div class='addr'>";
+    html += info.addr;
+    html += "</div><div class='rating'>";
+    html += "Rating: " + "<span class='rr'>"+rating+"</span> <div class='slider'></div>";
+    html += "</div></div>";
+
+    var infowindow = new google.maps.InfoWindow({ 
+      content: html,
+      size: new google.maps.Size(50,50)
     });
+
+    return infowindow;
+
+
+
+    // var taco = {
+    //   info: tacoPlace,
+    //   //latLng: latLong,
+    //   marker: marker,
+    //   infowindow: infowindow,
+    //   open: false,
+    //   id: id, 
+    //   rating: rating
+    // };
+
+
+
+
+
+
+    // addToList(taco);
+
+    // tacos.push(taco);
+
+    // google.maps.event.addListener(marker, 'click', function(event) {
+    //   closeAll();
+    //   if(!taco.open){
+    //     infowindow.open(map, marker);
+    //     makeSliders();
+    //   }else{
+    //     infowindow.close();        
+    //   }
+    //   taco.open = !taco.open;        
+    // });
 
 
   }
@@ -146,13 +170,19 @@ $(function(){
         title: name
     });
 
-    setClickBox(marker, tacoPlace, myLatlng, id);
+    return marker;
   }
 
   function addTacoPlaces(){
     for(var i = 0; i < TACO_PLACES.length; i++){
-        addMarker(TACO_PLACES[i], i);
+        var cur = TACO_PLACES[i];
+        cur.idx = i;
+        cur.marker = addMarker(cur, i);
+        cur.rating = getRating(cur.hash);
+        cur.infowindow = getClickBox(cur);
+        cur.listDiv = addToList(cur);
     }
+    console.log(TACO_PLACES);
   }
 
   initialize();
