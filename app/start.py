@@ -33,6 +33,8 @@ class Application(tornado.web.Application):
                                          **options.tornado_settings)
 
 if __name__ == "__main__":
-    http_server = tornado.httpserver.HTTPServer(Application())
-    http_server.listen(options.cli_args.port)
-    tornado.ioloop.IOLoop.instance().start()
+    # http_server = tornado.httpserver.HTTPServer(Application())
+    # http_server.listen(options.cli_args.port)
+    # tornado.ioloop.IOLoop.instance().start()
+
+    application = Application()
