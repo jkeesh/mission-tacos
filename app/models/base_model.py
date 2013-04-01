@@ -93,9 +93,16 @@ class User(Model):
         return "[" + result + "]"
 
     def add_rating(self, taco_hash, rating):
-        r = Rating.create(self, taco_hash, rating)
+        found = False
+        for r in self.ratings:
+            if r.taco_hash == taco_hash:
+                r.rating = rating
+                found = True
 
-        self.ratings.append(r)
+        if not found:
+            r = Rating.create(self, taco_hash, rating)
+            self.ratings.append(r)
+
         self.save()
 
     @classmethod

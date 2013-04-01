@@ -23,6 +23,7 @@ class RatingHandler(tornado.web.RequestHandler):
         taco_hash = self.get_argument('hash')
         user.add_rating(taco_hash, val)
 
+        # return useful response, not this
         self.render('index.html',
                     debug=options.cli_args.debug,
                     user=user)
