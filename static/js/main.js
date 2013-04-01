@@ -2,6 +2,13 @@ $(function(){
 
   var tacos = []
 
+  String.prototype.hashCode = function() {
+    for(var ret = 0, i = 0, len = this.length; i < len; i++) {
+      ret = (31 * ret + this.charCodeAt(i)) << 0;
+    }
+    return ret;
+  };
+
   // Initialize the map
   function initialize() {
     var mapOptions = {
@@ -49,13 +56,15 @@ $(function(){
     html += "</div><div class='addr'>";
     html += tacoPlace.addr;
     html += "</div><div class='rating'>";
-    html += "Rating: " + "10.0";
+    html += "Rating: " + "<span class='rr'>None</span> <div class='slider'></div>";
     html += "</div></div>";
 
     var infowindow = new google.maps.InfoWindow({ 
       content: html,
       size: new google.maps.Size(50,50)
     });
+
+
 
 
     var taco = {
@@ -80,6 +89,21 @@ $(function(){
       closeAll();
       if(!taco.open){
         infowindow.open(map, marker);
+
+        $( ".slider" ).slider({
+            slide: function(event, ui){
+              var value = ui.value / 10;
+              $this = $(this);
+              var $parent = $this.parent();
+              var $rating = $parent.find('.rr');
+              $rating.html(value);
+            },
+            stop: function(event, ui){
+              var value = ui.value / 10;
+
+              alert(value);
+            }
+        });
       }else{
         infowindow.close();        
       }
