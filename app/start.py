@@ -51,7 +51,7 @@ else:
     application = tornado.wsgi.WSGIApplication([
         (r"/", MainHandler),
     ])
-    server = wsgiref.simple_server.make_server('', 8888, application)
+    server = wsgiref.simple_server.make_server('', 8000, application)
     server.serve_forever()
 
     print "WE GOT HERE"
