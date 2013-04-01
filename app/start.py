@@ -5,6 +5,7 @@ import tornado.web
 import sys
 import platform
 import tornado.wsgi
+from tornado.wsgi import WSGIContainer
 
 ## For production
 if platform.node() == "madness":
@@ -33,8 +34,13 @@ class Application(tornado.web.Application):
                                          **options.tornado_settings)
 
 if __name__ == "__main__":
-    # http_server = tornado.httpserver.HTTPServer(Application())
-    # http_server.listen(options.cli_args.port)
-    # tornado.ioloop.IOLoop.instance().start()
 
-    application = Application()
+    app = Application()
+
+    if not local:
+        app = WSGIContainer(app)
+
+    http_server = tornado.httpserver.HTTPServer(app)
+
+    http_server.listen(options.cli_args.port)
+    tornado.ioloop.IOLoop.instance().start()
