@@ -1,5 +1,7 @@
 import json as simplejson
 import urllib
+import hashlib
+
 
 GEOCODE_BASE_URL = 'http://maps.googleapis.com/maps/api/geocode/json'
 
@@ -16,6 +18,10 @@ SHOPS = [
 ]
 
 
+def get_hash(place_name, place_addr):
+    return hashlib.sha224(place_name + place_addr).hexdigest()[:10]
+
+
 def geocode(shop, sensor, **geo_args):
     geo_args.update({
         'address': shop[1] + ", San Francisco",
@@ -30,6 +36,7 @@ def geocode(shop, sensor, **geo_args):
     single_result = {
         "name": shop[0],
         "addr": shop[1],
+        "hash": get_hash(shop[0], shop[1])
     }
 
     loc = data['geometry']['location']
