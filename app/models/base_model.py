@@ -52,9 +52,7 @@ class Rating(Model):
 
     key_prefix = "rating"
 
-    place_id = StringField(max_length=20)
-    place_name = StringField(max_length=100)
-    place_addr = StringField(max_length=100)
+    taco_hash = StringField(max_length=20)
     rating = FloatField()
 
     @staticmethod
@@ -63,19 +61,17 @@ class Rating(Model):
         return hashlib.sha224(place_name + place_addr).hexdigest()[:10]
 
     @staticmethod
-    def create(user, place_name, place_addr, rating):
-        key = Rating.get_key(place_name, place_addr)
-        rating = Rating(place_id=key, place_name=place_name,
-                        place_addr=place_addr, rating=rating)
+    def create(user, taco_hash, rating):
+        rating = Rating(taco_hash=taco_hash, rating=rating)
 
         ## Key of the form
         ## rating:user-id:place-hash
-        rating.obj_id = "%s:%s" % (user.obj_id, key)
+        rating.obj_id = "%s:%s" % (user.obj_id, taco_hash)
         rating.save()
         return rating
 
     def __unicode__(self):
-        return "%s, %s [%d]" % (self.place_name, self.place_addr, self.rating)
+        return "%s [%d]" % (self.taco_hash, self.rating)
 
 
 class User(Model):
@@ -86,8 +82,8 @@ class User(Model):
     password = StringField(max_length=5000)
     ratings = ListField(EmbeddedDocumentField(Rating))
 
-    def add_rating(self, place_name, place_addr, rating):
-        r = Rating.create(self, place_name, place_addr, rating)
+    def add_rating(self, taco_hash, rating):
+        r = Rating.create(self, taco_hash, rating)
 
         self.ratings.append(r)
         self.save()

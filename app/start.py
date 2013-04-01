@@ -24,6 +24,7 @@ class Application(tornado.web.Application):
             }),
             (r'/login/', main_handlers.LoginHandler),
             (r'/register/', main_handlers.RegistrationHandler),
+            (r'/save_rating', main_handlers.RatingHandler),
             (r'/.*', main_handlers.IndexHandler),
         ]
         tornado.web.Application.__init__(self,

@@ -101,7 +101,18 @@ $(function(){
             stop: function(event, ui){
               var value = ui.value / 10;
 
-              alert(value);
+              $.ajax({
+                type: "POST",
+                url: "/save_rating",
+                data: {
+                    value: value,
+                    hash: tacoPlace.hash
+                },
+                success: function(resp){
+                    console.log(resp);
+                },
+                dataType: 'json'
+              });
             }
         });
       }else{
