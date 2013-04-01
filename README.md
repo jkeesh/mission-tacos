@@ -44,6 +44,8 @@ Server Setup
     $ sudo apt-get install python-dev
     $ sudo pip install -r requirements.txt 
 
+3. Install redis on server as above
 
+    $ sudo apt-get install make
 
 Navigate in yo' web browsing device to http://localhost:8000/
