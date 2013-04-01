@@ -7,6 +7,16 @@ import tornado.web
 from handlers import main_handlers
 import options
 
+import sys
+import platform
+
+## For production
+if platform.node() == "madness":
+    sys.path.append('/home/jkeesh/sites/missiontacos.com/app')
+
+    # This way print statements don't break our code
+    sys.stdout = sys.stderr
+
 
 class Application(tornado.web.Application):
     def __init__(self):
