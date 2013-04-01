@@ -49,3 +49,30 @@ Server Setup
     $ sudo apt-get install make
 
 Navigate in yo' web browsing device to http://localhost:8000/
+
+
+=========
+
+Deploy Process, because I'll probably forget
+
+    $ git push web master
+
+    // Login to server
+    // (optional) $ screen -ls
+
+    $ screen -r tacos-app
+
+    // Find previous python process
+    $ ps aux | grep python
+
+    // Kill previous python process
+    $ sudo kill -9 <pid>
+
+    // Start again
+    $ sudo python app/start.py &
+
+    // Server
+    $ sudo service apache2 restart
+
+    // Close screen
+    Ctrl + a, d
