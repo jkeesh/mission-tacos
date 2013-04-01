@@ -9,6 +9,7 @@ from dictshield.fields import StringField
 
 from redis_connection import redis_conn
 
+
 class Model(Document):
     key_prefix = None
 
@@ -23,7 +24,8 @@ class Model(Document):
         if not self.id:
             self.obj_id = redis_conn.incr("%s:id" % self.key_prefix)
 
-        redis_conn.set("%s:%s" % (self.key_prefix, self.obj_id), self.to_json())
+        redis_conn.set("%s:%s" % (
+            self.key_prefix, self.obj_id), self.to_json())
         return self.obj_id
 
     @classmethod
