@@ -20,6 +20,7 @@ import options
 print sys.path
 
 if local:
+    print "LOCAL"
 
     class Application(tornado.web.Application):
         def __init__(self):
@@ -41,6 +42,8 @@ if local:
         http_server.listen(options.cli_args.port)
         tornado.ioloop.IOLoop.instance().start()
 else:
+    print "LIVE"
+
     class MainHandler(tornado.web.RequestHandler):
         def get(self):
             self.write("Hello, world")
@@ -49,5 +52,6 @@ else:
         application = tornado.wsgi.WSGIApplication([
             (r"/", MainHandler),
         ])
-        server = wsgiref.simple_server.make_server('', 8000, application)
+        server = wsgiref.simple_server.make_server('', 8888, application)
+        print server
         server.serve_forever()
