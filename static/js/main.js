@@ -50,7 +50,7 @@ $(function(){
   function addMarker(tacoPlace){
     console.log(tacoPlace);
     var name = tacoPlace.name;
-    var myLatlng = new google.maps.LatLng(tacoPlace.lat, tacoPlace.long);
+    var myLatlng = new google.maps.LatLng(tacoPlace.lat, tacoPlace.lng);
 
     var marker = new google.maps.Marker({
         position: myLatlng,

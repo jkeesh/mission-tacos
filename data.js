@@ -1,4 +1,4 @@
-TACO_PLACES = [
+[
     {
         "addr": "2889 Mission St", 
         "lat": 37.750884, 
