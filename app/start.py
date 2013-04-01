@@ -5,6 +5,7 @@ import tornado.web
 import sys
 import platform
 import tornado.wsgi
+import wsgiref.simple_server
 
 ## For production
 if platform.node() == "madness":
@@ -18,24 +19,8 @@ import options
 
 print sys.path
 
+if local:
 
-if not local:
-    class Application(tornado.wsgi.WSGIApplication):
-        def __init__(self):
-            url_handlers = [
-                (r'/static/(.*)', tornado.web.StaticFileHandler, {
-                    'path': 'static/'
-                }),
-                (r'/login/', main_handlers.LoginHandler),
-                (r'/register/', main_handlers.RegistrationHandler),
-                (r'/.*', main_handlers.IndexHandler),
-            ]
-            tornado.wsgi.WSGIApplication.__init__(self,
-                                             url_handlers,
-                                             autoescape=None,
-                                             **options.tornado_settings)
-
-else:
     class Application(tornado.web.Application):
         def __init__(self):
             url_handlers = [
@@ -51,7 +36,18 @@ else:
                                              autoescape=None,
                                              **options.tornado_settings)
 
-if __name__ == "__main__":
-    http_server = tornado.httpserver.HTTPServer(Application())
-    http_server.listen(options.cli_args.port)
-    tornado.ioloop.IOLoop.instance().start()
+    if __name__ == "__main__":
+        http_server = tornado.httpserver.HTTPServer(Application())
+        http_server.listen(options.cli_args.port)
+        tornado.ioloop.IOLoop.instance().start()
+else:
+    class MainHandler(tornado.web.RequestHandler):
+        def get(self):
+            self.write("Hello, world")
+
+    if __name__ == "__main__":
+        application = tornado.wsgi.WSGIApplication([
+            (r"/", MainHandler),
+        ])
+        server = wsgiref.simple_server.make_server('', 8000, application)
+        server.serve_forever()
