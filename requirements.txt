@@ -1,4 +1,5 @@
 dictshield==0.4.4
+py-bcrypt==0.3
 redis==2.7.2
 tornado==2.4.1
 wsgiref==0.1.2
