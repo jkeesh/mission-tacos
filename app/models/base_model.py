@@ -53,6 +53,8 @@ class Rating(Model):
     key_prefix = "rating"
 
     place_id = StringField(max_length=20)
+    place_name = StringField(max_length=100)
+    place_addr = StringField(max_length=100)
     rating = FloatField()
 
     @staticmethod
@@ -63,13 +65,17 @@ class Rating(Model):
     @staticmethod
     def create(user, place_name, place_addr, rating):
         key = Rating.get_key(place_name, place_addr)
-        rating = Rating(place_id=key, rating=rating)
+        rating = Rating(place_id=key, place_name=place_name,
+                        place_addr=place_addr, rating=rating)
 
         ## Key of the form
         ## rating:user-id:place-hash
-        rating.obj_id = "%d:%s" % (user.obj_id, key)
+        rating.obj_id = "%s:%s" % (user.obj_id, key)
         rating.save()
         return rating
+
+    def __unicode__(self):
+        return "%s, %s [%d]" % (self.place_name, self.place_addr, self.rating)
 
 
 class User(Model):
@@ -79,6 +85,12 @@ class User(Model):
     email = EmailField(max_length=1024)
     password = StringField(max_length=5000)
     ratings = ListField(EmbeddedDocumentField(Rating))
+
+    def add_rating(self, place_name, place_addr, rating):
+        r = Rating.create(self, place_name, place_addr, rating)
+
+        self.ratings.append(r)
+        self.save()
 
     @classmethod
     def get_by_email(cls, email):
