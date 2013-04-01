@@ -5,7 +5,6 @@ import tornado.web
 import sys
 import os
 import platform
-import options
 
 
 ## For production
@@ -16,6 +15,8 @@ if platform.node() == "madness":
     #sys.stdout = sys.stderr
 
 from handlers import main_handlers
+import options
+
 # except ImportError:
 #     sys.path.append(os.path.dirname(__file__))
 #     print sys.path
