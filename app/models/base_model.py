@@ -24,7 +24,7 @@ class Model(EmbeddedDocument):
             raise Exception("Key prefix not defined!")
 
         # if id is not set, assume we're creating object
-        if not hasattr(self, 'obj_id'):
+        if not self.obj_id:
             self.obj_id = redis_conn.incr("%s:id" % self.key_prefix)
 
         redis_conn.set("%s:%s" % (
