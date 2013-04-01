@@ -71,7 +71,13 @@ class Rating(Model):
         return rating
 
     def __unicode__(self):
-        return "%s [%d]" % (self.taco_hash, self.rating)
+        return "{key: '%s', val: %.1f}" % (self.taco_hash, self.rating)
+
+    def __str__(self):
+        return "{key: '%s', val: %.1f}" % (self.taco_hash, self.rating)
+
+    def output(self):
+        return "{key: '%s', val: %.1f}" % (self.taco_hash, self.rating)
 
 
 class User(Model):
@@ -81,6 +87,10 @@ class User(Model):
     email = EmailField(max_length=1024)
     password = StringField(max_length=5000)
     ratings = ListField(EmbeddedDocumentField(Rating))
+
+    def print_ratings(self):
+        result = ",".join([r.output() for r in self.ratings])
+        return "[" + result + "]"
 
     def add_rating(self, taco_hash, rating):
         r = Rating.create(self, taco_hash, rating)
