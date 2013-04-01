@@ -13,4 +13,5 @@ cli_args = _parse_arguments()
 tornado_settings = dict(
     debug=cli_args.debug,  # always refresh templates
     template_path=os.path.join(os.path.dirname(__file__), "templates"),
+    cookie_secret="61oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo="
 )
