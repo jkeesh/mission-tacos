@@ -27,6 +27,15 @@ $(function(){
     }
   }
 
+  function getRating(hash){
+    for(var i = 0; i < ratings.length; i++){
+      var cur = ratings[i];
+      if(cur.key == hash){
+        return cur.val;
+      }
+    }
+    return "None";
+  }
 
 
   // Add the taco info to the list
@@ -36,7 +45,8 @@ $(function(){
     html += tacoInfo.info.name;
     html += "</div><div class='addr'>"
     html += tacoInfo.info.addr;
-    html += "</div></div>";
+    html += "</div>Rating: " + "<span class='rr'>"+getRating(tacoInfo.info.hash)+"</span>";
+    html += "</div>";
     $("#taco-list-info").append(html);
 
     $(".info-item[data-id='"+tacoInfo.id+"']").click(function(){
@@ -56,7 +66,7 @@ $(function(){
     html += "</div><div class='addr'>";
     html += tacoPlace.addr;
     html += "</div><div class='rating'>";
-    html += "Rating: " + "<span class='rr'>None</span> <div class='slider'></div>";
+    html += "Rating: " + "<span class='rr'>"+getRating(tacoPlace.hash)+"</span> <div class='slider'></div>";
     html += "</div></div>";
 
     var infowindow = new google.maps.InfoWindow({ 
