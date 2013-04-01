@@ -2,9 +2,19 @@
 import tornado.ioloop
 import tornado.httpserver
 import tornado.web
+import sys
+import os
 
 # Our imports
-from handlers import main_handlers
+try:
+    from handlers import main_handlers
+except ImportError:
+    sys.path.append(os.path.dirname(__file__))
+    try:
+        from handlers import main_handlers
+    except:
+        pass
+
 import options
 
 import sys
