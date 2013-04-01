@@ -1,11 +1,24 @@
-
-
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
 
+#map-canvas{
+	border: 2px solid black;
+}
 
+#map-wrap{
+	width:700px; 
+	height: 500px; 
+	margin-left: 1px;
+	float: left;
+}
 
+#taco-list{
+	float: left;
+	background-color: red;
+	width: 200px;
+	height: 100%;
+}
 
 
 
