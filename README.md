@@ -32,4 +32,18 @@ To start the app, open 3 terminal windows:
     2) redis-server
     3) redis-cli
 
+
+========
+
+Server Setup
+
+1. Create git repository for pushing to from here: https://gist.github.com/jkeesh/3774227
+
+2. Install requirements on server
+    
+    $ sudo apt-get install python-dev
+    $ sudo pip install -r requirements.txt 
+
+
+
 Navigate in yo' web browsing device to http://localhost:8000/

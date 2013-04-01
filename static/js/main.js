@@ -21,11 +21,14 @@ $(function(){
   }
 
 
+
   // Add the taco info to the list
   function addToList(tacoInfo){
     var html = "<div class='info-item' data-id='"+tacoInfo.id+"'><div class='name'>";
 
     html += tacoInfo.info.name;
+    html += "</div><div class='addr'>"
+    html += tacoInfo.info.addr;
     html += "</div></div>";
     $("#taco-list-info").append(html);
 
@@ -39,12 +42,21 @@ $(function(){
   // Set the box to open when you click this marker
   function setClickBox(marker, tacoPlace, latLong, id){
 
-    var content = "<div class='taco-info'><b>" + tacoPlace.name + "</b></div>";
+
+    var html = "<div class='info-item' data-id='"+tacoPlace.id+"'><div class='name'>";
+
+    html += tacoPlace.name;
+    html += "</div><div class='addr'>";
+    html += tacoPlace.addr;
+    html += "</div><div class='rating'>";
+    html += "Rating: " + "10.0";
+    html += "</div></div>";
 
     var infowindow = new google.maps.InfoWindow({ 
-      content: content,
+      content: html,
       size: new google.maps.Size(50,50)
     });
+
 
     var taco = {
       info: tacoPlace,
@@ -55,12 +67,16 @@ $(function(){
       id: id
     };
 
+
+
+
+
+
     addToList(taco);
 
     tacos.push(taco);
 
     google.maps.event.addListener(marker, 'click', function(event) {
-      console.log('clicked');
       closeAll();
       if(!taco.open){
         infowindow.open(map, marker);
