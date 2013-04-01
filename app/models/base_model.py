@@ -1,12 +1,13 @@
 import json
 
+import bcrypt
 from dictshield.document import Document
+from dictshield.fields import EmailField
 from dictshield.fields import IntField
 from dictshield.fields import UUIDField
 from dictshield.fields import StringField
 
 from redis_connection import redis_conn
-
 
 class Model(Document):
     key_prefix = None
@@ -45,23 +46,28 @@ class User(Model):
 
     key_prefix = "user"
 
-    username = StringField(max_length=1024)
+    email = EmailField(max_length=1024)
     password = StringField(max_length=5000)
 
     @classmethod
-    def get_by_username(cls, username):
+    def get_by_email(cls, email):
         max_id = redis_conn.get("%s:id" % cls.key_prefix)
         if not max_id:
             return None
+
         for idx in xrange(1, int(max_id) + 1):
             user = cls.get_one(idx)
             if not user:
                 continue
 
-            if user.username == username:
+            if user.email == email:
                 return user
         return None
 
+    @classmethod
+    def hash_password(cls, raw_password):
+        hashed_pw = bcrypt.hashpw(raw_password, bcrypt.gensalt())
+        return hashed_pw
 
-
-
+    def check_password(self, password):
+        return bcrypt.hashpw(password, self.password) == self.password

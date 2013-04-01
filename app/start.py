@@ -14,6 +14,8 @@ class Application(tornado.web.Application):
             (r'/static/(.*)', tornado.web.StaticFileHandler, {
                 'path': 'static/'
             }),
+            (r'/login/', main_handlers.LoginHandler),
+            (r'/register/', main_handlers.RegistrationHandler),
             (r'/.*', main_handlers.IndexHandler),
         ]
         tornado.web.Application.__init__(self,

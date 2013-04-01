@@ -26,4 +26,10 @@ Copy over redis init scripts:
     sudo cp src/redis-server /usr/local/bin/
     sudo cp src/redis-cli /usr/local/bin/
 
+To start the app, open 3 terminal windows:
+
+    1) python app/start.py
+    2) redis-server
+    3) redis-cli
+
 Navigate in yo' web browsing device to http://localhost:8000/
