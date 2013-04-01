@@ -4,6 +4,7 @@
 
 #map-canvas{
 	border: 2px solid black;
+	max-width: inherit;
 }
 
 #map-wrap{
@@ -15,18 +16,31 @@
 
 #taco-list{
 	float: left;
-	background-color: red;
 	width: 200px;
 	height: 100%;
+	padding: 10px;
+	overflow: scroll;
 }
 
 
+.info-item{
+	padding: 10px;
+	cursor: pointer;
+
+}
+
+.info-item .name{
+	font-weight: bold;
+}
+
+.info-item:hover{
+	background-color: #eee;
+}
 
 
-
-
-
-
+img[src*="gstatic.com/"], img[src*="googleapis.com/"]  {
+    max-width: 99999px;
+}
 
 
 

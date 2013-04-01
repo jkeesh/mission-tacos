@@ -8,6 +8,7 @@ SHOPS = [
     ("Tacqueria Altena", "2588 Mission St"),
     ("El Taco Loco", "3274 24th St"),
     ("Taquerias El Farolito", "2779 Mission St"),
+    ("Taquerias El Farolito", "2950 24th St"),
     ("La Corneta Taqueria", "2731 Mission St"),
     ("Taqueria Vallarta", "3039 24th St"),
     ("Tacolicious", "741 Valencia St"),
@@ -17,7 +18,7 @@ SHOPS = [
 
 def geocode(shop, sensor, **geo_args):
     geo_args.update({
-        'address': shop[0] + " " + shop[1] + ", San Francisco",
+        'address': shop[1] + ", San Francisco",
         'sensor': sensor
     })
 

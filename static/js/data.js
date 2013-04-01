@@ -19,8 +19,14 @@ TACO_PLACES = [
     }, 
     {
         "addr": "2779 Mission St", 
-        "lat": 37.7749295, 
-        "lng": -122.4194155, 
+        "lat": 37.7525766, 
+        "lng": -122.4184731, 
+        "name": "Taquerias El Farolito"
+    }, 
+    {
+        "addr": "2950 24th St", 
+        "lat": 37.7527321, 
+        "lng": -122.4111265, 
         "name": "Taquerias El Farolito"
     }, 
     {
