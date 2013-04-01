@@ -42,22 +42,16 @@ $(function(){
   }
 
   function makeSliders(info){
-//      console.log(info);
-
       var initialRating = null;
       if(info.rating != "None"){
-        initialRating = info.rating;
+        initialRating = info.rating * 10;
       }else{
         initialRating = 50;
       }
 
       console.log(initialRating);
 
-      if($(".slider").slider('instance')){
-        $( ".slider" ).slider( "destroy" );
-      }
-
-      $( ".slider" ).slider({
+      $("." +info.hash + " .slider").slider({
             value: initialRating,
             slide: function(event, ui){
               var value = ui.value / 10;
@@ -74,7 +68,7 @@ $(function(){
                 url: "/save_rating",
                 data: {
                     value: value,
-                    hash: tacoPlace.hash
+                    hash: info.hash
                 },
                 success: function(resp){
                     console.log(resp);
@@ -102,7 +96,7 @@ $(function(){
   function getClickBox(info){
     var rating = info.rating;
 
-    var html = "<div class='info-item' data-id='"+info.idx+"'><div class='name'>";
+    var html = "<div class='info-item taco-box "+info.hash+"' data-id='"+info.idx+"'><div class='name'>";
 
     html += info.name;
     html += "</div><div class='addr'>";
@@ -126,7 +120,7 @@ $(function(){
         closeAll();
         if(!info.open){
           info.infowindow.open(map, info.marker);
-          //makeSliders(info);
+          makeSliders(info);
         }else{
           info.infowindow.close();        
         }
