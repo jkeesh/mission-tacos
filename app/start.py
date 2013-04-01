@@ -4,28 +4,26 @@ import tornado.httpserver
 import tornado.web
 import sys
 import os
-
-# Our imports
-try:
-    from handlers import main_handlers
-except ImportError:
-    sys.path.append(os.path.dirname(__file__))
-    try:
-        from handlers import main_handlers
-    except:
-        pass
-
+import platform
 import options
 
-import sys
-import platform
 
 ## For production
 if platform.node() == "madness":
     sys.path.append('/home/jkeesh/sites/missiontacos.com/app')
 
     # This way print statements don't break our code
-    sys.stdout = sys.stderr
+    #sys.stdout = sys.stderr
+
+from handlers import main_handlers
+# except ImportError:
+#     sys.path.append(os.path.dirname(__file__))
+#     print sys.path
+#     try:
+#         from handlers import main_handlers
+#     except:
+
+#         pass
 
 
 class Application(tornado.web.Application):
