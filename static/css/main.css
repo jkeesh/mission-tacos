@@ -2,26 +2,24 @@
    Author's custom styles
    ========================================================================== */
 
-#map-canvas{
-	border: 2px solid black;
-	max-width: inherit;
+body {
+	padding-top: 40px;
+	padding-bottom: 40px;
 }
 
-#map-wrap{
-	width:700px; 
-	height: 500px; 
-	margin-left: 1px;
-	float: left;
+#map-wrap {
+	width: 100%;
+	height: 750px;
 }
 
-#taco-list{
-	float: left;
+#taco-list {
+	position: fixed;
+	right: 0;
+	top: 40px;
 	width: 200px;
 	height: 100%;
-	padding: 10px;
-	overflow: scroll;
+	background: #fff;
 }
-
 
 .info-item{
 	padding: 10px;
