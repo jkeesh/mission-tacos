@@ -16,25 +16,26 @@ body {
 	position: fixed;
 	right: 0;
 	top: 40px;
-	width: 200px;
+	width: 220px;
 	height: 100%;
 	background: #fff;
+	overflow-y: scroll;
 }
 
-.info-item{
-	padding: 10px;
-	cursor: pointer;
-
-}
-
-.info-item .name{
-	font-weight: bold;
-}
-
-.info-item:hover{
+.info-item-container:hover {
 	background-color: #eee;
 }
 
+.info-item {
+	padding: 10px;
+	cursor: pointer;
+	width: 160px;
+	margin: 0 auto;
+}
+
+.info-item .name {
+	font-weight: bold;
+}
 
 img[src*="gstatic.com/"], img[src*="googleapis.com/"]  {
     max-width: 99999px;
