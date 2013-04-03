@@ -89,7 +89,9 @@ $(function(){
     html += info.addr;
     html += "</div>My Rating: " + "<span class='rr'>"+info.rating+"</span>";
     html += "</div>";
-    $("#taco-list-info").append(html);
+
+    var container_html = "<div class='info-item-container'>" + html + "</div>";
+    $("#taco-list-info").append(container_html);
   }
 
   // Set the box to open when you click this marker
@@ -105,7 +107,7 @@ $(function(){
     html += "My Rating: " + "<span class='rr'>"+rating+"</span> <div class='slider'></div>";
     html += "</div></div>";
 
-    var infowindow = new google.maps.InfoWindow({ 
+    var infowindow = new google.maps.InfoWindow({
       content: html,
       size: new google.maps.Size(50,50)
     });
@@ -122,9 +124,9 @@ $(function(){
           info.infowindow.open(map, info.marker);
           makeSliders(info);
         }else{
-          info.infowindow.close();        
+          info.infowindow.close();
         }
-        info.open = !info.open;       
+        info.open = !info.open;
     }
 
     // For clicking on a marker
