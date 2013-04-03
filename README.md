@@ -33,7 +33,7 @@ To start the app, open 3 terminal windows:
         $ workon mission-tacos
     )
 
-    1) python app/start.py
+    1) python app/start.py --debug
     2) redis-server
     3) redis-cli
 

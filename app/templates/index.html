@@ -25,6 +25,8 @@
         <script>
         {% if user %}
         var ratings = {{user.print_ratings()}};
+        {% else %}
+        var ratings = [];
         {% end %}
         </script>
     </head>
