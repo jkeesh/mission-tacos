@@ -28,7 +28,12 @@ Copy over redis init scripts:
 
 To start the app, open 3 terminal windows:
 
-    1) python app/start.py
+    (
+        Jeremy: set up virtualenv using
+        $ workon mission-tacos
+    )
+
+    1) python app/start.py --debug
     2) redis-server
     3) redis-cli
 
