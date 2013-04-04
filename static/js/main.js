@@ -117,12 +117,20 @@ $(function(){
 
   // Add the taco info to the list
   function addToList(info){
-    var html = "<div class='info-item taco-click' data-id='"+info.idx+"'><div class='name'>";
+    var html = "<div class='info-item taco-click' data-id='"+info.idx+"'>"
 
+    html += "<div class='name'>";
     html += info.name;
-    html += "</div><div class='addr'>"
+    html += "</div>"
+
+    html += "<div class='addr'>"
     html += info.addr;
-    html += "</div>My Rating: " + "<span class='rr'>"+info.rating+"</span>";
+    html += "</div>";
+
+    html += "My Rating: " + "<span class='rr'>"+info.rating+"</span>";
+    html += "<br/>";
+    html += "Visits: " + "<span class='vv'>"+info.num_visits+"</span>";
+
     html += "</div>";
 
     var container_html = "<div class='info-item-container'>" + html + "</div>";
