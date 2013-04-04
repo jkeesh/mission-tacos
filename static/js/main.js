@@ -114,6 +114,82 @@ $(function(){
         });
   }
 
+  function sortListRating(){
+    // function sortUsingNestedText(parent, childSelector, keySelector) {
+    //     var items = parent.children(childSelector).sort(function(a, b) {
+    //         var vA = $(keySelector, a).text();
+    //         var vB = $(keySelector, b).text();
+    //         return (vA < vB) ? -1 : (vA > vB) ? 1 : 0;
+    //     });
+    //     parent.append(items);
+    // }
+    // Sorting by price can then be done as such:
+
+    // sortUsingNestedText($('#sortThis'), "div", "span.price");
+
+    function getVal(elem){
+        var val = $(elem).find('.rr').html();
+        if(val == "None"){
+            return -1;
+        }
+        return parseFloat(val);
+    }
+
+        var items = $('.info-item-container').sort(function(a, b){
+
+            var vA = getVal(a);
+            var vB = getVal(b);
+
+            console.log(vA);
+            console.log(vA);
+
+
+            return (vA < vB) ? 1 : (vA > vB) ? -1 : 0;
+        });
+
+        console.log(items);
+        $('#taco-list-info').html(items);
+
+  }
+  window.sortListRating = sortListRating;
+
+  function sortList(){
+    // function sortUsingNestedText(parent, childSelector, keySelector) {
+    //     var items = parent.children(childSelector).sort(function(a, b) {
+    //         var vA = $(keySelector, a).text();
+    //         var vB = $(keySelector, b).text();
+    //         return (vA < vB) ? -1 : (vA > vB) ? 1 : 0;
+    //     });
+    //     parent.append(items);
+    // }
+    // Sorting by price can then be done as such:
+
+    // sortUsingNestedText($('#sortThis'), "div", "span.price");
+
+        var items = $('.info-item-container').sort(function(a, b){
+                console.log("A");
+            console.log(a);
+            console.log("B");
+            console.log(b);
+
+            var vA = parseInt($(a).find('.vv').html());
+            var vB = parseInt($(b).find('.vv').html());
+
+
+
+            console.log(vA);
+            console.log(vA);
+
+
+            return (vA < vB) ? 1 : (vA > vB) ? -1 : 0;
+        });
+
+        console.log(items);
+        $('#taco-list-info').html(items);
+
+  }
+  window.sortList = sortList;
+
 
   // Add the taco info to the list
   function addToList(info){
