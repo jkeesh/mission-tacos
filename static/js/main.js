@@ -4,7 +4,7 @@ $(function(){
 
   String.prototype.hashCode = function() {
     for(var ret = 0, i = 0, len = this.length; i < len; i++) {
-      ret = (31 * ret + this.charCodeAt(i)) << 0;
+        ret = (31 * ret + this.charCodeAt(i)) << 0;
     }
     return ret;
   };
@@ -12,9 +12,9 @@ $(function(){
   // Initialize the map
   function initialize() {
     var mapOptions = {
-      center: new google.maps.LatLng(37.758636,-122.419088),
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+        center: new google.maps.LatLng(37.758636,-122.419088),
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(document.getElementById("map-canvas"),
     mapOptions);
@@ -23,22 +23,41 @@ $(function(){
   // Close all info windows
   function closeAll(){
     for(var i = 0; i < TACO_PLACES.length; i++){
-      var cur = TACO_PLACES[i];
-      if(cur.infowindow){
-        cur.infowindow.close();
-      }
+        var cur = TACO_PLACES[i];
+        if(cur.infowindow){
+            cur.infowindow.close();
+        }
     }
   }
 
   // Get the rating from the JS objects passed in
   function getRating(hash){
     for(var i = 0; i < ratings.length; i++){
-      var cur = ratings[i];
-      if(cur.key == hash){
-        return cur.val;
-      }
+        var cur = ratings[i];
+        if(cur.key == hash){
+            return cur.val;
+        }
     }
     return "None";
+  }
+
+  function visitedButton(info){
+      console.log(info);
+
+      $("." +info.hash + " .visit-btn").click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/add_visit",
+                data: {
+                    hash: info.hash
+                },
+                success: function(resp){
+                    console.log(resp);
+                },
+                dataType: 'json'
+              });
+
+      });
   }
 
   function makeSliders(info){
@@ -105,6 +124,7 @@ $(function(){
     html += info.addr;
     html += "</div><div class='rating'>";
     html += "My Rating: " + "<span class='rr'>"+rating+"</span> <div class='slider'></div>";
+    html += "<a href='#' class='btn btn-primary visit-btn'>Visited!</a><span class='num-visits'></span>";
     html += "</div></div>";
 
     var infowindow = new google.maps.InfoWindow({
@@ -123,6 +143,7 @@ $(function(){
         if(!info.open){
           info.infowindow.open(map, info.marker);
           makeSliders(info);
+          visitedButton(info);
         }else{
           info.infowindow.close();
         }

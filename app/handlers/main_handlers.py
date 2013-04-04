@@ -3,9 +3,27 @@ import json
 import tornado.web
 
 from models.base_model import User
-from models.base_model import Rating
 
 import options
+
+
+class VisitHandler(tornado.web.RequestHandler):
+    def get_current_user(self):
+        user_id = self.get_secure_cookie("user_id")
+        if not user_id:
+            return None
+        user = User.get_one(int(user_id))
+        return user
+
+    def post(self):
+        user = self.get_current_user()
+        taco_hash = self.get_argument('hash')
+        user.add_visit(taco_hash)
+
+        # return useful response, not this
+        self.render('index.html',
+                    debug=options.cli_args.debug,
+                    user=user)
 
 
 class RatingHandler(tornado.web.RequestHandler):
