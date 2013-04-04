@@ -26,7 +26,9 @@ class RatingHandler(tornado.web.RequestHandler):
         # return useful response, not this
         self.render('index.html',
                     debug=options.cli_args.debug,
-                    user=user)
+                    user=user,
+                    login_error=None,
+                    register_error=None)
 
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -41,25 +43,28 @@ class IndexHandler(tornado.web.RequestHandler):
         user = self.get_current_user()
         self.render('index.html',
                     debug=options.cli_args.debug,
-                    user=user)
+                    user=user,
+                    login_error=None,
+                    register_error=None)
 
 
 class LoginHandler(tornado.web.RequestHandler):
 
     def post(self):
-        email = self.get_argument('email')
-        password = self.get_argument('password')
+        email = self.get_argument('email', None)
+        password = self.get_argument('password', None)
 
         user = User.get_by_email(email)
-        if not user:
-            return None
-
-        if not user.check_password(password):
-            return None
+        if not user or not user.check_password(password):
+            self.render('index.html',
+                        debug=options.cli_args.debug,
+                        user=None,
+                        login_error="Email or password incorrect!",
+                        register_error=None)
+            return
 
         self.set_secure_cookie("user_id", unicode(user.obj_id))
-        response = json_success("Logged in successfully!")
-        return self.write(response)
+        self.redirect("/")
 
 
 def json_failure(message):
@@ -78,26 +83,36 @@ def json_success(message):
 
 class RegistrationHandler(tornado.web.RequestHandler):
 
+    def _render_register_error(self, error):
+        self.render('index.html',
+                    debug=options.cli_args.debug,
+                    user=None,
+                    login_error=None,
+                    register_error=error)
+
     def post(self):
         email = self.get_argument('email')
         password = self.get_argument('password')
         confirm_password = self.get_argument('confirm_password')
 
         if not email or not password or not confirm_password:
-            response = json_failure("Missing required field!")
-            return self.write(response)
+            self._render_register_error("Missing required field!")
+            return
 
         if not password == confirm_password:
-            response = json_failure("Passwords did not match!")
-            return self.write(response)
+            self._render_register_error("Passwords did not match!")
+            return
 
         user_exists = User.get_by_email(email)
         if user_exists:
-            response = json_failure("Email has already been registered!")
-            return self.write(response)
+            self._render_register_error("Email address already registered!")
+            return
 
         # create and store user object
         hashed_password = User.hash_password(password)
         user = User(email=email, password=hashed_password)
         user.save()
-        return self.write(json_success("Registered successfully!"))
+
+        # log user in
+        self.set_secure_cookie("user_id", unicode(user.obj_id))
+        self.redirect("/")

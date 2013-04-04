@@ -41,6 +41,9 @@ img[src*="gstatic.com/"], img[src*="googleapis.com/"]  {
     max-width: 99999px;
 }
 
+.header-error {
+	height:40px; color:red; line-height:40px; margin-right: 15px;
+}
 
 
 

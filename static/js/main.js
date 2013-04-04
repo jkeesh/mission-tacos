@@ -1,6 +1,57 @@
+// var SignupForm = (function() {
+
+//   var register_form = $("form", this.registration_container);
+//   var login_form = $("form", this.login_container);
+
+//   var initialize = function(options) {
+//     var registration_container = $(options.register_form_container);
+//     register_form = $("form", registration_container);
+//     var login_container = $(options.login_form_container);
+//     login_form = $("form", login_container);
+//     console.info(this.login_form);
+
+//     setupEvents();
+//   };
+
+//   var submitFormToUrl = function(url, form, success_cb) {
+//     $.ajax({
+//         type: "POST",
+//         url: url,
+//         data: $(form).serialize(),
+//         success: function(resp){
+//             console.info(resp);
+//         },
+//         dataType: 'json'
+//     });
+//   };
+
+//   var bindFormAction = function(elem, success_cb) {
+//     elem.submit(function(ev) {
+//       ev.preventDefault();
+//       submitFormToUrl("/login/", this, success_cb);
+//     });
+//   };
+
+//   var setupEvents = function() {
+//     console.info(register_form);
+//     bindFormAction(register_form, function(data) {
+//         console.info(data);
+//     });
+
+//     bindFormAction(login_form, function(data) {
+//         console.info(data);
+//     });
+//   };
+
+//   return {
+//     'initialize': initialize
+//   }
+
+// })();
+
 $(function(){
 
-  var tacos = []
+  var tacos = [];
 
   String.prototype.hashCode = function() {
     for(var ret = 0, i = 0, len = this.length; i < len; i++) {
@@ -77,6 +128,25 @@ $(function(){
               });
             }
         });
+  }
+
+  function handleRegistrationButton() {
+    $("#register-button").bind("click", function(ev){
+      ev.preventDefault();
+      $("#login-form-container").hide();
+      $("#register-form-container").show();
+      $(this).hide();
+      $("#login-button").show();
+      $(".header-error").hide()
+    });
+    $("#login-button").bind("click", function(ev){
+      ev.preventDefault();
+      $("#register-form-container").hide();
+      $("#login-form-container").show();
+      $(this).hide();
+      $("#register-button").show();
+      $(".header-error").hide()
+    });
   }
 
 
@@ -171,5 +241,11 @@ $(function(){
 
   initialize();
   addTacoPlaces();
+  handleRegistrationButton();
   console.log(TACO_PLACES);
+
+  // SignupForm.initialize({
+  //   'register_form_container': '#register-form-container',
+  //   'login_form_container': '#login-form-container'
+  // });
 });
