@@ -18,12 +18,11 @@ class VisitHandler(tornado.web.RequestHandler):
     def post(self):
         user = self.get_current_user()
         taco_hash = self.get_argument('hash')
-        user.add_visit(taco_hash)
+        cur = user.add_visit(taco_hash)
 
         # return useful response, not this
-        self.render('index.html',
-                    debug=options.cli_args.debug,
-                    user=user)
+        response = json_success(cur)
+        return self.write(response)
 
 
 class RatingHandler(tornado.web.RequestHandler):
@@ -42,9 +41,8 @@ class RatingHandler(tornado.web.RequestHandler):
         user.add_rating(taco_hash, val)
 
         # return useful response, not this
-        self.render('index.html',
-                    debug=options.cli_args.debug,
-                    user=user)
+        response = json_success("Rated")
+        return self.write(response)
 
 
 class IndexHandler(tornado.web.RequestHandler):

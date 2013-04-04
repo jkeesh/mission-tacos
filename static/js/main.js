@@ -32,19 +32,33 @@ $(function(){
 
   // Get the rating from the JS objects passed in
   function getRating(hash){
-    for(var i = 0; i < ratings.length; i++){
-        var cur = ratings[i];
-        if(cur.key == hash){
-            return cur.val;
+    for(var i = 0; i < USER_TACO_INFO.length; i++){
+        var cur = USER_TACO_INFO[i];
+        if(cur.taco_hash == hash){
+            return cur.rating;
         }
     }
     return "None";
+  }
+
+  // Get the rating from the JS objects passed in
+  function getVisits(hash){
+    for(var i = 0; i < USER_TACO_INFO.length; i++){
+        var cur = USER_TACO_INFO[i];
+        if(cur.taco_hash == hash){
+            return cur.num_visits;
+        }
+    }
+    return 0;
   }
 
   function visitedButton(info){
       console.log(info);
 
       $("." +info.hash + " .visit-btn").click(function(){
+
+            var $elem = $(this);
+
             $.ajax({
                 type: "POST",
                 url: "/add_visit",
@@ -53,6 +67,10 @@ $(function(){
                 },
                 success: function(resp){
                     console.log(resp);
+
+                    var $el = $("." +info.hash + " .num-visits");
+                    console.log($el);
+                    $el.html(resp.message)
                 },
                 dataType: 'json'
               });
@@ -124,7 +142,7 @@ $(function(){
     html += info.addr;
     html += "</div><div class='rating'>";
     html += "My Rating: " + "<span class='rr'>"+rating+"</span> <div class='slider'></div>";
-    html += "<a href='#' class='btn btn-primary visit-btn'>Visited!</a><span class='num-visits'></span>";
+    html += "<a href='#' class='btn btn-primary visit-btn'>Visited!</a><span class='num-visits'>"+info.num_visits+"</span>";
     html += "</div></div>";
 
     var infowindow = new google.maps.InfoWindow({
@@ -182,6 +200,7 @@ $(function(){
         cur.idx = i;
         cur.marker = addMarker(cur, i);
         cur.rating = getRating(cur.hash);
+        cur.num_visits = getVisits(cur.hash);
         cur.infowindow = getClickBox(cur);
         cur.listDiv = addToList(cur);
 

@@ -72,13 +72,20 @@ class TacoInfo(Model):
         return info
 
     def __unicode__(self):
-        return "{key: '%s', val: %.1f}" % (self.taco_hash, self.rating)
+        ## Return a nice version of the data for JS
+        result = {}
+        for k, v in self.__dict__['_data'].iteritems():
+            if isinstance(v, unicode):
+                v = str(v)
+            result[k] = v
+
+        return str(result)
 
     def __str__(self):
-        return "{key: '%s', val: %.1f}" % (self.taco_hash, self.rating)
+        return unicode(self)
 
     def output(self):
-        return "{key: '%s', val: %.1f}" % (self.taco_hash, self.rating)
+        return unicode(self)
 
 
 class User(Model):
@@ -89,7 +96,7 @@ class User(Model):
     password = StringField(max_length=5000)
     tacos = ListField(EmbeddedDocumentField(TacoInfo))
 
-    def print_ratings(self):
+    def print_info(self):
         result = ",".join([r.output() for r in self.tacos])
         return "[" + result + "]"
 
@@ -108,6 +115,8 @@ class User(Model):
         info.num_visits += 1
 
         self.save()
+
+        return info.num_visits
 
     def add_rating(self, taco_hash, rating):
         found = False

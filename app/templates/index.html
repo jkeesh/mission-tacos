@@ -18,9 +18,9 @@
 
         <script>
         {% if user %}
-        var ratings = {{user.print_ratings()}};
+        var USER_TACO_INFO = {{user.print_info()}};
         {% else %}
-        var ratings = [];
+        var USER_TACO_INFO = [];
         {% end %}
         </script>
     </head>
