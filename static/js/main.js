@@ -66,10 +66,8 @@ $(function(){
                     hash: info.hash
                 },
                 success: function(resp){
-                    console.log(resp);
-
                     var $el = $("." +info.hash + " .num-visits");
-                    console.log($el);
+                    /// Update the number of visits
                     $el.html(resp.message)
                 },
                 dataType: 'json'
@@ -142,7 +140,7 @@ $(function(){
     html += info.addr;
     html += "</div><div class='rating'>";
     html += "My Rating: " + "<span class='rr'>"+rating+"</span> <div class='slider'></div>";
-    html += "<a href='#' class='btn btn-primary visit-btn'>Visited!</a><span class='num-visits'>"+info.num_visits+"</span>";
+    html += "<a href='#' class='btn btn-primary visit-btn'>Visited!</a>Vists: <span class='num-visits'>"+info.num_visits+"</span>";
     html += "</div></div>";
 
     var infowindow = new google.maps.InfoWindow({

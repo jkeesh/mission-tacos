@@ -97,6 +97,7 @@ class User(Model):
     tacos = ListField(EmbeddedDocumentField(TacoInfo))
 
     def print_info(self):
+        """whatever json dumps"""
         result = ",".join([r.output() for r in self.tacos])
         return "[" + result + "]"
 
@@ -119,6 +120,7 @@ class User(Model):
         return info.num_visits
 
     def add_rating(self, taco_hash, rating):
+        """Add a rating for a taco shop. If it exists, update the rating."""
         found = False
         for info in self.tacos:
             if info.taco_hash == taco_hash:
