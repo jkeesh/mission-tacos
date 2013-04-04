@@ -23,6 +23,7 @@ class Application(tornado.web.Application):
                 'path': 'static/'
             }),
             (r'/login/', main_handlers.LoginHandler),
+            (r'/logout/', main_handlers.LogoutHandler),
             (r'/register/', main_handlers.RegistrationHandler),
             (r'/save_rating', main_handlers.RatingHandler),
             (r'/add_visit', main_handlers.VisitHandler),

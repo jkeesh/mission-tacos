@@ -95,6 +95,13 @@ def json_success(message):
     })
 
 
+class LogoutHandler(tornado.web.RequestHandler):
+
+    def get(self):
+        self.clear_cookie("user_id")
+        self.redirect("/")
+
+
 class RegistrationHandler(tornado.web.RequestHandler):
 
     def _render_register_error(self, error):

@@ -45,7 +45,11 @@
                             <li class="active"><a href="/">Home</a></li>
                         </ul>
                         {% if user %}
-                        <div class="pull-right" style="color:#fff; height:40px; line-height:40px;">{{ user.email }}</div>
+
+                        <div class="pull-right" style="color:#fff; height:40px; line-height:40px;">{{ user.email }}
+                         <a href="/logout/" style="margin-left: 10px;">Logout</a>
+                        </div>
+
                         {% else %}
                         {% if not register_error %}
                         <a href="#" id='register-button' class='pull-right' style="line-height:40px; margin-left:10px;">Register</a>
