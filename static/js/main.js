@@ -1,6 +1,6 @@
 $(function(){
 
-  var tacos = []
+  var tacos = [];
 
   String.prototype.hashCode = function() {
     for(var ret = 0, i = 0, len = this.length; i < len; i++) {
@@ -114,6 +114,7 @@ $(function(){
         });
   }
 
+
   function sortListRating(){
     // function sortUsingNestedText(parent, childSelector, keySelector) {
     //     var items = parent.children(childSelector).sort(function(a, b) {
@@ -189,6 +190,25 @@ $(function(){
 
   }
   window.sortList = sortList;
+
+  function handleRegistrationButton() {
+    $("#register-button").bind("click", function(ev){
+      ev.preventDefault();
+      $("#login-form-container").hide();
+      $("#register-form-container").show();
+      $(this).hide();
+      $("#login-button").show();
+      $(".header-error").hide()
+    });
+    $("#login-button").bind("click", function(ev){
+      ev.preventDefault();
+      $("#register-form-container").hide();
+      $("#login-form-container").show();
+      $(this).hide();
+      $("#register-button").show();
+      $(".header-error").hide()
+    });
+  }
 
 
   // Add the taco info to the list
@@ -293,5 +313,11 @@ $(function(){
 
   initialize();
   addTacoPlaces();
+  handleRegistrationButton();
   console.log(TACO_PLACES);
+
+  // SignupForm.initialize({
+  //   'register_form_container': '#register-form-container',
+  //   'login_form_container': '#login-form-container'
+  // });
 });
