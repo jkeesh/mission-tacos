@@ -140,7 +140,7 @@ $(function(){
     html += info.addr;
     html += "</div><div class='rating'>";
     html += "My Rating: " + "<span class='rr'>"+rating+"</span> <div class='slider'></div>";
-    html += "<a href='#' class='btn btn-primary visit-btn'>Visited!</a>Vists: <span class='num-visits'>"+info.num_visits+"</span>";
+    html += "<div class='visit-wrap'><a href='#' class='btn btn-primary visit-btn'>Visited!</a>Vists: <span class='num-visits'>"+info.num_visits+"</span></div>";
     html += "</div></div>";
 
     var infowindow = new google.maps.InfoWindow({

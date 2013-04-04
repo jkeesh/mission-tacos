@@ -41,6 +41,18 @@ img[src*="gstatic.com/"], img[src*="googleapis.com/"]  {
     max-width: 99999px;
 }
 
+.visit-wrap{
+	margin-top: 5px;
+}
+
+.visit-btn{
+	margin-right: 8px;
+}
+
+.slider{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
 
 
 
