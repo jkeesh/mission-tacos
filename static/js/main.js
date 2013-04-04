@@ -55,7 +55,7 @@ $(function(){
 
   String.prototype.hashCode = function() {
     for(var ret = 0, i = 0, len = this.length; i < len; i++) {
-      ret = (31 * ret + this.charCodeAt(i)) << 0;
+        ret = (31 * ret + this.charCodeAt(i)) << 0;
     }
     return ret;
   };
@@ -63,9 +63,9 @@ $(function(){
   // Initialize the map
   function initialize() {
     var mapOptions = {
-      center: new google.maps.LatLng(37.758636,-122.419088),
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+        center: new google.maps.LatLng(37.758636,-122.419088),
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(document.getElementById("map-canvas"),
     mapOptions);
@@ -74,22 +74,57 @@ $(function(){
   // Close all info windows
   function closeAll(){
     for(var i = 0; i < TACO_PLACES.length; i++){
-      var cur = TACO_PLACES[i];
-      if(cur.infowindow){
-        cur.infowindow.close();
-      }
+        var cur = TACO_PLACES[i];
+        if(cur.infowindow){
+            cur.infowindow.close();
+        }
     }
   }
 
   // Get the rating from the JS objects passed in
   function getRating(hash){
-    for(var i = 0; i < ratings.length; i++){
-      var cur = ratings[i];
-      if(cur.key == hash){
-        return cur.val;
-      }
+    for(var i = 0; i < USER_TACO_INFO.length; i++){
+        var cur = USER_TACO_INFO[i];
+        if(cur.taco_hash == hash){
+            return cur.rating;
+        }
     }
     return "None";
+  }
+
+  // Get the rating from the JS objects passed in
+  function getVisits(hash){
+    for(var i = 0; i < USER_TACO_INFO.length; i++){
+        var cur = USER_TACO_INFO[i];
+        if(cur.taco_hash == hash){
+            return cur.num_visits;
+        }
+    }
+    return 0;
+  }
+
+  function visitedButton(info){
+      console.log(info);
+
+      $("." +info.hash + " .visit-btn").click(function(){
+
+            var $elem = $(this);
+
+            $.ajax({
+                type: "POST",
+                url: "/add_visit",
+                data: {
+                    hash: info.hash
+                },
+                success: function(resp){
+                    var $el = $("." +info.hash + " .num-visits");
+                    /// Update the number of visits
+                    $el.html(resp.message)
+                },
+                dataType: 'json'
+              });
+
+      });
   }
 
   function makeSliders(info){
@@ -152,12 +187,20 @@ $(function(){
 
   // Add the taco info to the list
   function addToList(info){
-    var html = "<div class='info-item taco-click' data-id='"+info.idx+"'><div class='name'>";
+    var html = "<div class='info-item taco-click' data-id='"+info.idx+"'>"
 
+    html += "<div class='name'>";
     html += info.name;
-    html += "</div><div class='addr'>"
+    html += "</div>"
+
+    html += "<div class='addr'>"
     html += info.addr;
-    html += "</div>My Rating: " + "<span class='rr'>"+info.rating+"</span>";
+    html += "</div>";
+
+    html += "My Rating: " + "<span class='rr'>"+info.rating+"</span>";
+    html += "<br/>";
+    html += "Visits: " + "<span class='vv'>"+info.num_visits+"</span>";
+
     html += "</div>";
 
     var container_html = "<div class='info-item-container'>" + html + "</div>";
@@ -175,6 +218,7 @@ $(function(){
     html += info.addr;
     html += "</div><div class='rating'>";
     html += "My Rating: " + "<span class='rr'>"+rating+"</span> <div class='slider'></div>";
+    html += "<div class='visit-wrap'><a href='#' class='btn btn-primary visit-btn'>Visited!</a>Vists: <span class='num-visits'>"+info.num_visits+"</span></div>";
     html += "</div></div>";
 
     var infowindow = new google.maps.InfoWindow({
@@ -193,6 +237,7 @@ $(function(){
         if(!info.open){
           info.infowindow.open(map, info.marker);
           makeSliders(info);
+          visitedButton(info);
         }else{
           info.infowindow.close();
         }
@@ -231,6 +276,7 @@ $(function(){
         cur.idx = i;
         cur.marker = addMarker(cur, i);
         cur.rating = getRating(cur.hash);
+        cur.num_visits = getVisits(cur.hash);
         cur.infowindow = getClickBox(cur);
         cur.listDiv = addToList(cur);
 

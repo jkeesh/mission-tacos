@@ -45,6 +45,19 @@ img[src*="gstatic.com/"], img[src*="googleapis.com/"]  {
 	height:40px; color:red; line-height:40px; margin-right: 15px;
 }
 
+.visit-wrap{
+	margin-top: 5px;
+}
+
+.visit-btn{
+	margin-right: 8px;
+}
+
+.slider{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 
 
 

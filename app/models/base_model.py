@@ -47,13 +47,14 @@ class Model(EmbeddedDocument):
         return cls(**obj_json)
 
 
-class Rating(Model):
+class TacoInfo(Model):
     """A rating has a key (hash of the name + address) and a rating (0-10)."""
 
-    key_prefix = "rating"
+    key_prefix = "taco"
 
     taco_hash = StringField(max_length=20)
     rating = FloatField()
+    num_visits = IntField(default=0)
 
     @staticmethod
     def get_key(place_name, place_addr):
@@ -62,22 +63,29 @@ class Rating(Model):
 
     @staticmethod
     def create(user, taco_hash, rating):
-        rating = Rating(taco_hash=taco_hash, rating=rating)
+        info = TacoInfo(taco_hash=taco_hash, rating=rating, num_visits=0)
 
         ## Key of the form
         ## rating:user-id:place-hash
-        rating.obj_id = "%s:%s" % (user.obj_id, taco_hash)
-        rating.save()
-        return rating
+        info.obj_id = "%s:%s" % (user.obj_id, taco_hash)
+        info.save()
+        return info
 
     def __unicode__(self):
-        return "{key: '%s', val: %.1f}" % (self.taco_hash, self.rating)
+        ## Return a nice version of the data for JS
+        result = {}
+        for k, v in self.__dict__['_data'].iteritems():
+            if isinstance(v, unicode):
+                v = str(v)
+            result[k] = v
+
+        return str(result)
 
     def __str__(self):
-        return "{key: '%s', val: %.1f}" % (self.taco_hash, self.rating)
+        return unicode(self)
 
     def output(self):
-        return "{key: '%s', val: %.1f}" % (self.taco_hash, self.rating)
+        return unicode(self)
 
 
 class User(Model):
@@ -86,22 +94,42 @@ class User(Model):
 
     email = EmailField(max_length=1024)
     password = StringField(max_length=5000)
-    ratings = ListField(EmbeddedDocumentField(Rating))
+    tacos = ListField(EmbeddedDocumentField(TacoInfo))
 
-    def print_ratings(self):
-        result = ",".join([r.output() for r in self.ratings])
+    def print_info(self):
+        """whatever json dumps"""
+        result = ",".join([r.output() for r in self.tacos])
         return "[" + result + "]"
 
+    def add_visit(self, taco_hash):
+        """Add a visit to this taco shop"""
+        info = None
+        for cur in self.tacos:
+            if cur.taco_hash == taco_hash:
+                info = cur
+                break
+
+        if not info:
+            info = TacoInfo.create(self, taco_hash, 5)
+            self.tacos.append(info)
+
+        info.num_visits += 1
+
+        self.save()
+
+        return info.num_visits
+
     def add_rating(self, taco_hash, rating):
+        """Add a rating for a taco shop. If it exists, update the rating."""
         found = False
-        for r in self.ratings:
-            if r.taco_hash == taco_hash:
-                r.rating = rating
+        for info in self.tacos:
+            if info.taco_hash == taco_hash:
+                info.rating = rating
                 found = True
 
         if not found:
-            r = Rating.create(self, taco_hash, rating)
-            self.ratings.append(r)
+            info = TacoInfo.create(self, taco_hash, rating)
+            self.tacos.append(info)
 
         self.save()
 
